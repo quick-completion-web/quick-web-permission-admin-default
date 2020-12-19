@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  tech.guyi.web.quick.permission.admin.defaults.configuration.DefaultPermissionAdminAutoConfiguration,\
+  tech.guyi.web.quick.permission.admin.defaults.configuration.DefaultPermissionAdminDbAutoConfiguration
