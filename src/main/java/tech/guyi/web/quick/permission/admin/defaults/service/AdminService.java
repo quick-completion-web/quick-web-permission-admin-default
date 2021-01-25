@@ -2,16 +2,31 @@ package tech.guyi.web.quick.permission.admin.defaults.service;
 
 import tech.guyi.web.quick.permission.admin.defaults.db.entity.DefaultAdmin;
 import tech.guyi.web.quick.permission.admin.defaults.db.entity.DefaultGroup;
-import tech.guyi.web.quick.permission.admin.defaults.db.entity.DefaultPermission;
 import tech.guyi.web.quick.permission.admin.defaults.service.entry.DefaultAdminEntry;
 import tech.guyi.web.quick.permission.admin.defaults.service.entry.PermissionEntry;
 import tech.guyi.web.quick.service.service.QuickService;
+import tech.guyi.web.quick.service.service.verifier.UniquenessVerifierItem;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 public interface AdminService extends QuickService<DefaultAdmin,String> {
+
+    @Override
+    default List<UniquenessVerifierItem<DefaultAdmin>> verifiers() {
+        return Arrays.asList(
+                new UniquenessVerifierItem<>(
+                        "名称不能重复",
+                        (root,query,builder,entity) -> builder.and(builder.equal(root.get("name"), entity.getName()))
+                ),
+                new UniquenessVerifierItem<>(
+                        "登录名称不能重复",
+                        (root,query,builder,entity) -> builder.and(builder.equal(root.get("loginName"), entity.getLoginName()))
+                )
+        );
+    }
 
     void initAdmin(DefaultAdmin admin, String password, Boolean superAdmin);
 

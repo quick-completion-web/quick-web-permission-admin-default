@@ -12,7 +12,7 @@ import tech.guyi.web.quick.permission.admin.defaults.controller.parameter.InitAd
 import tech.guyi.web.quick.permission.admin.defaults.controller.parameter.LoginParameter;
 import tech.guyi.web.quick.permission.admin.defaults.db.entity.DefaultAdmin;
 import tech.guyi.web.quick.permission.admin.defaults.db.entity.DefaultGroup;
-import tech.guyi.web.quick.permission.admin.defaults.exception.NoAuthorizationException;
+import tech.guyi.web.quick.core.exception.NoAuthorizationException;
 import tech.guyi.web.quick.permission.admin.defaults.service.AdminService;
 import tech.guyi.web.quick.permission.admin.defaults.service.entry.DefaultAdminEntry;
 import tech.guyi.web.quick.permission.admin.defaults.service.entry.PermissionEntry;

@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import tech.guyi.web.quick.permission.admin.defaults.controller.AdminController;
 import tech.guyi.web.quick.permission.admin.defaults.controller.GroupController;
 import tech.guyi.web.quick.permission.admin.defaults.controller.PermissionController;
-import tech.guyi.web.quick.permission.admin.defaults.controller.advice.ExceptionAdvice;
 import tech.guyi.web.quick.permission.admin.defaults.encryption.AdminPasswordEncryption;
 import tech.guyi.web.quick.permission.admin.defaults.encryption.defaults.DefaultAdminPasswordEncryption;
 import tech.guyi.web.quick.permission.admin.defaults.mapping.DefaultMappingInjection;
@@ -65,11 +64,6 @@ public class DefaultPermissionAdminAutoConfiguration implements MappingManagerCo
     @Bean
     public GroupController groupController(){
         return new GroupController();
-    }
-
-    @Bean
-    public ExceptionAdvice exceptionAdvice(){
-        return new ExceptionAdvice();
     }
 
 }

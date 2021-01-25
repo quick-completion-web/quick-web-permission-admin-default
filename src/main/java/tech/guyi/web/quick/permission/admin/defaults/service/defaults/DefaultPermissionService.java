@@ -13,6 +13,8 @@ import tech.guyi.web.quick.permission.admin.defaults.service.entry.DefaultAdminE
 import tech.guyi.web.quick.permission.admin.defaults.service.entry.MenuEntry;
 import tech.guyi.web.quick.permission.admin.defaults.service.entry.PermissionEntry;
 import tech.guyi.web.quick.permission.authorization.AuthorizationCurrent;
+import tech.guyi.web.quick.service.entity.QuickUuidEntity;
+import tech.guyi.web.quick.service.service.verifier.UniquenessVerifier;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -38,7 +40,7 @@ public class DefaultPermissionService implements PermissionService {
     }
 
     @Override
-    public <S extends DefaultPermission> S autoSave(S entity) {
+    public DefaultPermission autoSave(DefaultPermission entity) {
         this.findOne((root,query,builder) -> builder.and(builder.equal(root.get("key"), entity.getKey())))
                 .filter(permission -> !permission.getId().equals(entity.getId()))
                 .ifPresent(permission -> {

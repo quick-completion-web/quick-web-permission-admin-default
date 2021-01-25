@@ -7,12 +7,13 @@ import tech.guyi.web.quick.permission.admin.defaults.db.DefaultAdminTransactiona
 import tech.guyi.web.quick.permission.admin.defaults.db.entity.*;
 import tech.guyi.web.quick.permission.admin.defaults.db.repository.DefaultAdminRepository;
 import tech.guyi.web.quick.permission.admin.defaults.encryption.AdminPasswordEncryption;
-import tech.guyi.web.quick.permission.admin.defaults.exception.NoAuthorizationException;
+import tech.guyi.web.quick.core.exception.NoAuthorizationException;
 import tech.guyi.web.quick.permission.admin.defaults.service.*;
 import tech.guyi.web.quick.permission.admin.defaults.service.entry.DefaultAdminEntry;
 import tech.guyi.web.quick.permission.admin.defaults.service.entry.PermissionEntry;
 import tech.guyi.web.quick.permission.admin.entry.Permission;
 import tech.guyi.web.quick.permission.authorization.AuthorizationCurrent;
+import tech.guyi.web.quick.service.service.verifier.UniquenessVerifier;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -61,23 +62,14 @@ public class DefaultAdminService implements AdminService {
             superAdmin.setSuperAdmin(true);
             this.superAdminService.autoSave(superAdmin);
         }
-    }
 
-    @Override
-    public <S extends DefaultAdmin> S autoSave(S entity) {
-        this.findOne((root,query,builder) -> builder.and(builder.equal(root.get("name"), entity.getName())))
-                .filter(permission -> !permission.getId().equals(entity.getId()))
-                .ifPresent(permission -> {
-                    throw new WebRequestException("名称不能重复");
-                });
-        this.findOne((root,query,builder) -> builder.and(builder.equal(root.get("loginName"), entity.getLoginName())))
-                .filter(permission -> !permission.getId().equals(entity.getId()))
-                .ifPresent(permission -> {
-                    throw new WebRequestException("登录名称不能重复");
-                });
-
-        this.autoTime(entity);
-        return this.repository.save(entity);
+        if (this.permissionService.count((root,query,build) -> build.and(build.equal(root.get("menu"), true))) == 0){
+            DefaultPermission permission = new DefaultPermission();
+            permission.setMenu(true);
+            permission.setPath("/system/menu");
+            permission.setKey("default-menu-manager");
+            this.permissionService.autoSave(permission);
+        }
     }
 
     public void initAdmin(DefaultAdmin admin, String password, Boolean superAdmin){
